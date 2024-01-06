@@ -2,8 +2,10 @@
 # AzerothCore
 #
 
-/conf/*
-!/conf/dist
+conf/dist/*
+!/conf/dist/config.cmake
+!/conf/dist/config.sh
+!/conf/dist/env.ac
 /modules/*
 !/modules/*.md
 !/modules/*.sh
@@ -23,6 +25,8 @@
 /data/sql/custom/*
 /src/server/scripts/Custom/*
 !/src/server/scripts/Custom/README.md
+/env/docker
+
 
 /*.override.yml
 /*.override.yaml
@@ -100,9 +104,5 @@ local.properties
 old-docker-compose.yml
 Store_new/
 Store-lua-old/
-modules/mod-*
 scripts/
-env.docker
-env/docker/
 lua_scripts
-conf/dist/env.docker
