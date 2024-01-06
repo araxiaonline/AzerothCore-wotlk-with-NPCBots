@@ -17,13 +17,18 @@ Abilities:
 If affected target dies from Dark Ranger\'s damage, a Dark Minion will spawn from the corpse
 (maximum 5 Minions, 80 seconds duration, only works on humanoids, beasts and dragonkin),
 skeleton level depends on level of the killed unit
-Deals five times more damage if target is under 20% health
+Deals 200% more damage if target is under 20% health
 3) Drain Life. Drains health from an enemy every second for 5 seconds (6 ticks),
 healing Dark Ranger for 200% of the drained amount
 4) Charm NIY
 5ex) Auto Shot. A hunter auto shot ability since dark ranger is purely ranged and only uses bows.
 Complete - 75%
 TODO: Charm
+
+
+Balancing Updates
+- Reduced Dark Ranger from 500% < 20% damage to 250% damage
+- Reduced Max Minions to 3 down from 5
 */
 
 enum DarkRangerBaseSpells
@@ -39,7 +44,7 @@ enum DarkRangerPassives
 enum DarkRangerSpecial
 {
     DRAINLIFE_COST                      = 75 * 5,
-    MAX_MINIONS                         = 5,
+    MAX_MINIONS                         = 3,
 
     SPELL_SPAWN_ANIM                    = 25035,
     SPELL_BLOODY_EXPLOSION              = 36599,
@@ -291,7 +296,7 @@ public:
             float pctbonus = 1.0f;
             //Black Arrow on targets < 20% hp (only direct damage)
             if (baseId == BLACK_ARROW_1 && damageinfo.target && damageinfo.target->HasAuraState(AURA_STATE_HEALTHLESS_20_PERCENT))
-                pctbonus *= 5.f;
+                pctbonus *= 2.5f;
 
             damage = int32(damage * pctbonus + flat_mod);
         }
