@@ -2004,8 +2004,21 @@ bool ConditionMgr::isConditionTypeValid(Condition* cond)
 
         if (cond->ConditionValue2 < 1 || cond->ConditionValue2 > sWorld->GetConfigMaxSkillValue())
         {
-            LOG_ERROR("sql.sql", "Skill condition specifies invalid skill value ({}), skipped", cond->ConditionValue2);
-            return false;
+            // Handle cases where the user has set an expansion lower than the existing conditions. 
+            bool isError = true; 
+            int8 expansion = uint8(sWorld->getIntConfig(CONFIG_EXPANSION)); 
+            if(expansion == 1 && cond->ConditionValue2 > 300) {
+                isError = false; 
+            }
+
+            if(expansion == 2 && cond->ConditionValue2 > 375) {
+                isError = false; 
+            }
+
+            if(isError) {
+                LOG_ERROR("sql.sql", "Skill condition specifies invalid skill value ({}), skipped", cond->ConditionValue2);
+                return false;
+            }            
         }
         if (cond->ConditionValue3)
             LOG_ERROR("sql.sql", "Skill condition has useless data in value3 ({})!", cond->ConditionValue3);
