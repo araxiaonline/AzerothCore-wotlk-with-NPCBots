@@ -106,3 +106,4 @@ Store_new/
 Store-lua-old/
 scripts/
 lua_scripts
+env.docker
