@@ -4369,4 +4369,20 @@ float Creature::GetBotAverageItemLevel() const
 {
     return bot_AI ? bot_AI->GetAverageItemLevel() : 0.0f;
 }
+
+ float Creature::GetTotalBotStat(BotStatMods stat)
+ {
+    return bot_AI ? bot_AI->GetTotalBotStat(stat) : 0.0f;
+ }
+
+bool Creature::UnequipItem(uint8 slot, ObjectGuid receiver)
+{
+    return bot_AI ? bot_AI->UnequipItem(slot, receiver) : false;
+}
+
+bool Creature::EquipItem(uint8 slot, Item* newItem, ObjectGuid receiver)
+{
+    return bot_AI ? bot_AI->EquipItem(slot, newItem, receiver) : false;
+}
+
 //END NPCBOT

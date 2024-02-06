@@ -13767,6 +13767,24 @@ bool bot_ai::UnEquipAll(ObjectGuid receiver)
     return suc;
 }
 
+/**
+ * Adds public functions around the private ones needed for managing equipment outside of the gossip menu
+ */
+bool bot_ai::CanEquip(ItemTemplate const* newProto, uint8 slot, bool ignoreItemLevel, Item const* newItem) 
+{
+    return _canEquip(newProto, slot, ignoreItemLevel, newItem);
+}
+
+bool bot_ai::UnequipItem(uint8 slot, ObjectGuid receiver)
+{
+    return _unequip(slot, receiver);
+}
+
+bool bot_ai::EquipItem(uint8 slot, Item* newItem, ObjectGuid receiver)
+{
+    return _equip(slot, newItem, receiver);
+}
+
 bool bot_ai::HasRealEquipment() const
 {
     EquipmentInfo const* einfo = BotDataMgr::GetBotEquipmentInfo(me->GetEntry());

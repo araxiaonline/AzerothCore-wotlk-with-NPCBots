@@ -29,6 +29,10 @@
 #include "World.h"
 #include <list>
 
+//npcbot
+#include "botcommon.h"
+//
+
 class SpellInfo;
 
 // npcbot
@@ -503,6 +507,11 @@ public:
     Item* GetBotEquips(uint8 slot) const;
     Item* GetBotEquipsByGuid(ObjectGuid itemGuid) const;
     float GetBotAverageItemLevel() const;
+    float GetTotalBotStat(BotStatMods stat);
+
+    bool UnequipItem(uint8 slot, ObjectGuid receiver);
+    bool EquipItem(uint8 slot, Item* newItem, ObjectGuid receiver);
+
     //End NPCBots
 
 protected:

@@ -256,6 +256,7 @@ class bot_ai : public CreatureAI
 
         float GetTotalBotStat(BotStatMods stat) const { return _getTotalBotStat(stat); }
 
+        // Equipment management
         Item* GetEquips(uint8 slot) const { return _equips[slot]; }
         Item* GetEquipsByGuid(ObjectGuid itemGuid) const;
         uint32 GetEquipDisplayId(uint8 slot) const;
@@ -263,6 +264,11 @@ class bot_ai : public CreatureAI
         bool HasRealEquipment() const;
         float GetAverageItemLevel() const;
         std::pair<float, float> GetBotGearScores() const;
+
+        // Additionals for managing equipment
+        bool CanEquip(ItemTemplate const* newProto, uint8 slot, bool ignoreItemLevel, Item const* newItem = nullptr);
+        bool UnequipItem(uint8 slot, ObjectGuid receiver);
+        bool EquipItem(uint8 slot, Item* newItem, ObjectGuid receiver);
 
         void CastBotItemCombatSpell(DamageInfo const& damageInfo);
         void CastBotItemCombatSpell(DamageInfo const& damageInfo, Item* item, ItemTemplate const* proto);

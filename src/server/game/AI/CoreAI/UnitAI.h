@@ -67,7 +67,7 @@ struct DefaultTargetSelector : public Acore::unary_function<Unit*, bool>
 
         if (m_playerOnly && (target->GetTypeId() != TYPEID_PLAYER))
             //npcbot: allow to target bots
-            //if (!(target->IsNPCBot()))
+            if (!(target->IsNPCBot()))
             //end npcbot
             return false;
 
@@ -141,6 +141,7 @@ struct PowerUsersSelector : public Acore::unary_function<Unit*, bool>
             return false;
 
         if (_playerOnly && target->GetTypeId() != TYPEID_PLAYER)
+            if (!(target->IsNPCBot()))
             return false;
 
         if (_dist > 0.0f && !_me->IsWithinCombatRange(target, _dist))
@@ -163,6 +164,7 @@ struct FarthestTargetSelector : public Acore::unary_function<Unit*, bool>
             return false;
 
         if (_playerOnly && target->GetTypeId() != TYPEID_PLAYER)
+            if (!(target->IsNPCBot()))
             return false;
 
         if (_maxDist > 0.0f && !_me->IsInRange(target, _minDist, _maxDist))

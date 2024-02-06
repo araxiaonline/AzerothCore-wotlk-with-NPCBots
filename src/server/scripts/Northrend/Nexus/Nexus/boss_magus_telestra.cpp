@@ -59,7 +59,7 @@ enum Misc
 
     ACHIEVEMENT_SPLIT_PERSONALITY   = 2150,
 
-    GAME_EVENT_WINTER_VEIL          = 2,
+    NEXUS_GAME_EVENT_WINTER_VEIL    = 2,
 };
 
 enum Events
@@ -100,7 +100,7 @@ public:
             copiesDied = 0;
             achievement = true;
 
-            if (IsHeroic() && sGameEventMgr->IsActiveEvent(GAME_EVENT_WINTER_VEIL) && !me->HasAura(SPELL_WEAR_CHRISTMAS_HAT))
+            if (IsHeroic() && sGameEventMgr->IsActiveEvent(NEXUS_GAME_EVENT_WINTER_VEIL) && !me->HasAura(SPELL_WEAR_CHRISTMAS_HAT))
                 me->AddAura(SPELL_WEAR_CHRISTMAS_HAT, me);
         }
 
