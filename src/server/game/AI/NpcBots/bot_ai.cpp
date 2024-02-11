@@ -2020,11 +2020,11 @@ bool bot_ai::CanRemoveReflectSpells(Unit const* target, uint32 spellId) const
 //LIST AURAS
 const char* bot_ai::BotDump(Player const* player, Unit const* unit) const
 {
-    return _listAuras(player, unit);
+    return _listAuras(player, unit, false);
 }
 
 // Debug: Returns bot's info to called player
-const char* bot_ai::_listAuras(Player const* player, Unit const* unit) const
+const char* bot_ai::_listAuras(Player const* player, Unit const* unit, bool sendChat) const
 {
     //if (player->GetSession()->GetSecurity() == SEC_PLAYER) return;
     if (!player->IsGameMaster() && (IAmFree() || !IsInBotParty(player))) return "";
@@ -2277,8 +2277,9 @@ const char* bot_ai::_listAuras(Player const* player, Unit const* unit) const
         //        ch.PSendSysMessage("Item mod %u: bonus = %i", i, val);
         //}
     }
+    if(sendChat)
+        ch.SendSysMessage(botstring.str().c_str());
 
-    /* ch.SendSysMessage(botstring.str().c_str()); */
     return botstring.str().c_str();
 }
 //SetStats
@@ -3416,10 +3417,10 @@ void bot_ai::ReceiveEmote(Player* player, uint32 emote)
     switch (emote)
     {
         case TEXT_EMOTE_BONK:
-            static_cast<void>(_listAuras(player, me));
+            static_cast<void>(_listAuras(player, me, true));
             break;
         case TEXT_EMOTE_SALUTE:
-            static_cast<void>(_listAuras(player, player));
+            static_cast<void>(_listAuras(player, player, true));
             break;
         case TEXT_EMOTE_STAND:
             if (master != player)

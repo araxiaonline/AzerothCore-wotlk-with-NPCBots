@@ -631,7 +631,7 @@ class bot_ai : public CreatureAI
 
         std::tuple<Unit*, Unit*> _getTargets(bool byspell, bool ranged, bool &reset) const;
         Unit* _getVehicleTarget(BotVehicleStrats strat) const;
-        const char* _listAuras(Player const* player, Unit const* unit) const;
+        const char* _listAuras(Player const* player, Unit const* unit, bool sendChat) const;
         bool _checkImmunities(Unit const* target, SpellInfo const* spellInfo) const;
         static float _getAttackDistance(float distance) { return distance*0.72f; }
         void _extendAttackRange(float& dist) const;
