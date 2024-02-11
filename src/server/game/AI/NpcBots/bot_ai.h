@@ -255,6 +255,7 @@ class bot_ai : public CreatureAI
         MeleeHitOutcome BotRollCustomMeleeOutcomeAgainst(Unit const* victim, WeaponAttackType attType) const;
 
         float GetTotalBotStat(BotStatMods stat) const { return _getTotalBotStat(stat); }
+        const char* BotDump(Player const* player, Unit const* unit) const;
 
         // Equipment management
         Item* GetEquips(uint8 slot) const { return _equips[slot]; }
@@ -630,7 +631,7 @@ class bot_ai : public CreatureAI
 
         std::tuple<Unit*, Unit*> _getTargets(bool byspell, bool ranged, bool &reset) const;
         Unit* _getVehicleTarget(BotVehicleStrats strat) const;
-        void _listAuras(Player const* player, Unit const* unit) const;
+        const char* _listAuras(Player const* player, Unit const* unit) const;
         bool _checkImmunities(Unit const* target, SpellInfo const* spellInfo) const;
         static float _getAttackDistance(float distance) { return distance*0.72f; }
         void _extendAttackRange(float& dist) const;

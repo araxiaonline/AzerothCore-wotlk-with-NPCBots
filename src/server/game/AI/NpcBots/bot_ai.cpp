@@ -2018,12 +2018,17 @@ bool bot_ai::CanRemoveReflectSpells(Unit const* target, uint32 spellId) const
     return false;
 }
 //LIST AURAS
+const char* bot_ai::BotDump(Player const* player, Unit const* unit) const
+{
+    return _listAuras(player, unit);
+}
+
 // Debug: Returns bot's info to called player
-void bot_ai::_listAuras(Player const* player, Unit const* unit) const
+const char* bot_ai::_listAuras(Player const* player, Unit const* unit) const
 {
     //if (player->GetSession()->GetSecurity() == SEC_PLAYER) return;
-    if (!player->IsGameMaster() && (IAmFree() || !IsInBotParty(player))) return;
-    if (!IsInBotParty(unit)) return;
+    if (!player->IsGameMaster() && (IAmFree() || !IsInBotParty(player))) return "";
+    if (!IsInBotParty(unit)) return "";
     ChatHandler ch(player->GetSession());
     std::ostringstream botstring;
     botstring.setf(std::ios_base::fixed);
@@ -2273,7 +2278,8 @@ void bot_ai::_listAuras(Player const* player, Unit const* unit) const
         //}
     }
 
-    ch.SendSysMessage(botstring.str().c_str());
+    /* ch.SendSysMessage(botstring.str().c_str()); */
+    return botstring.str().c_str();
 }
 //SetStats
 // Health, Armor, Powers, Combat Ratings, and global update setup
@@ -3410,10 +3416,10 @@ void bot_ai::ReceiveEmote(Player* player, uint32 emote)
     switch (emote)
     {
         case TEXT_EMOTE_BONK:
-            _listAuras(player, me);
+            static_cast<void>(_listAuras(player, me));
             break;
         case TEXT_EMOTE_SALUTE:
-            _listAuras(player, player);
+            static_cast<void>(_listAuras(player, player));
             break;
         case TEXT_EMOTE_STAND:
             if (master != player)
@@ -13770,7 +13776,7 @@ bool bot_ai::UnEquipAll(ObjectGuid receiver)
 /**
  * Adds public functions around the private ones needed for managing equipment outside of the gossip menu
  */
-bool bot_ai::CanEquip(ItemTemplate const* newProto, uint8 slot, bool ignoreItemLevel, Item const* newItem) 
+bool bot_ai::CanEquip(ItemTemplate const* newProto, uint8 slot, bool ignoreItemLevel, Item const* newItem)
 {
     return _canEquip(newProto, slot, ignoreItemLevel, newItem);
 }
