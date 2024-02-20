@@ -132,6 +132,9 @@ public:
     // Called when a player logs in.
     virtual void OnLogin(Player* /*player*/) { }
 
+    // Called before the player is logged out
+    virtual void OnBeforeLogout(Player* /*player*/) { }
+
     // Called when a player logs out.
     virtual void OnLogout(Player* /*player*/) { }
 
@@ -320,6 +323,8 @@ public:
     [[nodiscard]] virtual bool CanRepopAtGraveyard(Player* /*player*/) { return true; }
 
     virtual void OnGetMaxSkillValue(Player* /*player*/, uint32 /*skill*/, int32& /*result*/, bool /*IsPure*/) { }
+
+    [[nodiscard]] virtual bool OnPlayerHasActivePowerType(Player const* /*player*/, Powers /*power*/) { return false; }
 
     /**
      * @brief This hook called before gathering skill gain is applied to the character.

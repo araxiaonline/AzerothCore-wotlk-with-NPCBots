@@ -361,6 +361,14 @@ void ScriptMgr::OnPlayerLoadFromDB(Player* player)
     });
 }
 
+void ScriptMgr::OnBeforePlayerLogout(Player* player)
+{
+    ExecuteScript<PlayerScript>([&](PlayerScript* script)
+        {
+            script->OnBeforeLogout(player);
+        });
+}
+
 void ScriptMgr::OnPlayerLogout(Player* player)
 {
     ExecuteScript<PlayerScript>([&](PlayerScript* script)
@@ -1036,6 +1044,21 @@ void ScriptMgr::OnGetMaxSkillValue(Player* player, uint32 skill, int32& result, 
     {
         script->OnGetMaxSkillValue(player, skill, result, IsPure);
     });
+}
+
+bool ScriptMgr::OnPlayerHasActivePowerType(Player const* player, Powers power)
+{
+    auto ret = IsValidBoolScript<PlayerScript>([&](PlayerScript* script)
+        {
+            return script->OnPlayerHasActivePowerType(player, power);
+        });
+
+    if (ret && *ret)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 void ScriptMgr::OnUpdateGatheringSkill(Player *player, uint32 skillId, uint32 currentLevel, uint32 gray, uint32 green, uint32 yellow, uint32 &gain) {
