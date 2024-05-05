@@ -107,3 +107,6 @@ Store-lua-old/
 scripts/
 lua_scripts
 env.docker
+
+#araxiaonline
+.aider.*
