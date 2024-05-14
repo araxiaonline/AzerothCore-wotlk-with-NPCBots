@@ -111,7 +111,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.ACORE_DOCKER_REPO_ACCESS_TOKEN }}
-          repository: azerothcore/acore-docker
+          repository: ghcr.io/araxiaonline/AzerothCore-wotlk-with-NPCBots
           event-type: azerothcore-new-images
           client-payload: >
             {
