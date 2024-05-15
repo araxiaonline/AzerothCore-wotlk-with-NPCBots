@@ -22,7 +22,8 @@ env:
 
 jobs:
   build-containers:
-    runs-on: "ubuntu-latest"
+    #runs-on: "ubuntu-latest"
+    runs-on: arc-runner-set
     if: |
       github.repository == 'araxiaonline/AzerothCore-wotlk-with-NPCBots'
       && !github.event.pull_request.draft
