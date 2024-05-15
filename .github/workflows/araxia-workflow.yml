@@ -1,4 +1,4 @@
-name: docker-build
+name: araxia-docker-build
 on:
   push:
     branches:
