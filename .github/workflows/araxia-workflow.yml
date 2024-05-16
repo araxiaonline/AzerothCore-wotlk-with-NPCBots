@@ -2,7 +2,7 @@ name: araxia-docker-build
 on:
   push:
     branches:
-      - 'araxia-main'
+      - 'araxia-main-blarg'
   pull_request:
     types:
       - labeled
