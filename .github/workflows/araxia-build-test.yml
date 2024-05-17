@@ -28,6 +28,12 @@ jobs:
       - name: Build a Container
         run: docker build -t ghcr.io/araxiaonline/acore-skeleton:${{ github.sha }} --target skeleton --file ./apps/docker/Dockerfile .
 
+      - name: Build a Container
+        run: docker build -t ghcr.io/araxiaonline/araxia-worldserver:${{ github.sha }} --target worldserver --file ./apps/docker/Dockerfile .
+
+      - name: Build a Container
+        run: docker build -t ghcr.io/araxiaonline/araxia-authserver:${{ github.sha }} --target authserver --file ./apps/docker/Dockerfile .
+
       - name: Login to GitHub Docker Registry
         uses: docker/login-action@v2
         with:
@@ -38,9 +44,16 @@ jobs:
       - name: Push skeleton image
         run: docker push ghcr.io/araxiaonline/acore-skeleton:${{ github.sha }}
 
-      - name: build worldserver
-        uses: ./.github/actions/docker-tag-and-build
-        with:
-          component-name: worldserver
-          tags: ghcr.io/araxiaonline/azerothcore-worldserver:${{ github.sha }}
-          push: true
+      - name: Push skeleton image
+        run: docker push ghcr.io/araxiaonline/araxia-worldserver:${{ github.sha }}
+
+      - name: Push skeleton image
+        run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ github.sha }}
+
+      # - name: build worldserver
+      #   uses: ./.github/actions/docker-tag-and-build
+      #   with:
+      #     component-name: worldserver
+      #     tags: ghcr.io/araxiaonline/azerothcore-worldserver:${{ github.sha }}
+      #     push: true
+
