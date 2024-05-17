@@ -10,7 +10,8 @@ concurrency:
 
 jobs:
   build-skeleton:
-    runs-on: "ubuntu-latest"
+    # runs-on: "ubuntu-latest"
+    runs-on: arc-runner-set
     steps:
       - uses: actions/checkout@v4
       - name: Free up disk space
@@ -25,13 +26,13 @@ jobs:
         with:
           buildkitd-flags: --debug
 
-      - name: Build a Container
+      - name: Build Skeleton Container
         run: docker build -t ghcr.io/araxiaonline/acore-skeleton:${{ github.sha }} --target skeleton --file ./apps/docker/Dockerfile .
 
-      - name: Build a Container
+      - name: Build Worldserver Container
         run: docker build -t ghcr.io/araxiaonline/araxia-worldserver:${{ github.sha }} --target worldserver --file ./apps/docker/Dockerfile .
 
-      - name: Build a Container
+      - name: Build Authserver Container
         run: docker build -t ghcr.io/araxiaonline/araxia-authserver:${{ github.sha }} --target authserver --file ./apps/docker/Dockerfile .
 
       - name: Login to GitHub Docker Registry
@@ -44,10 +45,10 @@ jobs:
       - name: Push skeleton image
         run: docker push ghcr.io/araxiaonline/acore-skeleton:${{ github.sha }}
 
-      - name: Push skeleton image
+      - name: Push Worldserver image
         run: docker push ghcr.io/araxiaonline/araxia-worldserver:${{ github.sha }}
 
-      - name: Push skeleton image
+      - name: Push Authserver image
         run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ github.sha }}
 
       # - name: build worldserver
