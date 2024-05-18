@@ -39,21 +39,6 @@ jobs:
         with:
           buildkitd-flags: --debug
 
-      - name: Build Skeleton Container
-        run: docker buildx build -t ghcr.io/araxiaonline/acore-skeleton:${{ steps.docker_tag.outputs.tag }} --target skeleton --file ./apps/docker/Dockerfile .
-
-      - name: Build Worldserver Container
-        run: docker buildx build -t ghcr.io/araxiaonline/araxia-worldserver:${{ steps.docker_tag.outputs.tag }} --target worldserver --file ./apps/docker/Dockerfile .
-
-      - name: Build Authserver Container
-        run: docker buildx build -t ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }} --target authserver --file ./apps/docker/Dockerfile .
-
-      - name: Build db-import Container
-        run: docker buildx build -t ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }} --target db-import --file ./apps/docker/Dockerfile .
-
-      - name: Build client-data Container
-        run: docker buildx build -t ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }} --target client-data --file ./apps/docker/Dockerfile .
-
       - name: Login to GitHub Docker Registry
         uses: docker/login-action@v2
         with:
@@ -61,20 +46,36 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push skeleton image
-        run: docker push ghcr.io/araxiaonline/acore-skeleton:${{ steps.docker_tag.outputs.tag }}
+      - name: Build Skeleton Container
+        run: docker buildx build --push -t ghcr.io/araxiaonline/acore-skeleton:${{ steps.docker_tag.outputs.tag }} --target skeleton --file ./apps/docker/Dockerfile .
 
-      - name: Push Worldserver image
-        run: docker push ghcr.io/araxiaonline/araxia-worldserver:${{ steps.docker_tag.outputs.tag }}
+      - name: Build Worldserver Container
+        run: docker buildx build --push -t ghcr.io/araxiaonline/araxia-worldserver:${{ steps.docker_tag.outputs.tag }} --target worldserver --file ./apps/docker/Dockerfile .
 
-      - name: Push Authserver image
-        run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }}
+      - name: Build Authserver Container
+        run: docker buildx build --push -t ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }} --target authserver --file ./apps/docker/Dockerfile .
 
-      - name: Push db-import image
-        run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }}
+      - name: Build db-import Container
+        run: docker buildx build --push -t ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }} --target db-import --file ./apps/docker/Dockerfile .
 
-      - name: Push client-data image
-        run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }}
+      - name: Build client-data Container
+        run: docker buildx build --push -t ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }} --target client-data --file ./apps/docker/Dockerfile .
+
+
+      # - name: Push skeleton image
+      #   run: docker push ghcr.io/araxiaonline/acore-skeleton:${{ steps.docker_tag.outputs.tag }}
+
+      # - name: Push Worldserver image
+      #   run: docker push ghcr.io/araxiaonline/araxia-worldserver:${{ steps.docker_tag.outputs.tag }}
+
+      # - name: Push Authserver image
+      #   run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }}
+
+      # - name: Push db-import image
+      #   run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }}
+
+      # - name: Push client-data image
+      #   run: docker push ghcr.io/araxiaonline/araxia-authserver:${{ steps.docker_tag.outputs.tag }}
 
       # - name: build worldserver
       #   uses: ./.github/actions/docker-tag-and-build
