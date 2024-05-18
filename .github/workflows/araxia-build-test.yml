@@ -29,6 +29,9 @@ jobs:
         with:
           buildkitd-flags: --debug
 
+      - name: Dockerhub Login
+        run: docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - name: Build Skeleton Container
         run: docker buildx build -t ghcr.io/araxiaonline/acore-skeleton:${{ github.event.release.tag_name }} --target skeleton --file ./apps/docker/Dockerfile .
 
