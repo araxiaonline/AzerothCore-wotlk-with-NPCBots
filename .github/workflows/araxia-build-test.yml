@@ -1,11 +1,11 @@
 name: araxia-docker-test
-on:
-  push:
-    branches:
-      - 'araxia-main'
 # on:
-#   release:
-#     types: [published]
+#   push:
+#     branches:
+#       - 'araxia-main'
+on:
+  release:
+    types: [published]
 
 concurrency:
   group: ${{ github.head_ref }} || concat(${{ github.ref }}, ${{ github.workflow }})
