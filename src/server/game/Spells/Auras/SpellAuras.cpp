@@ -670,9 +670,7 @@ void Aura::UpdateTargetMap(Unit* caster, bool apply)
             if ((itr->second & (1 << effIndex)) && itr->first->IsImmunedToSpellEffect(GetSpellInfo(), effIndex))
                 itr->second &= ~(1 << effIndex);
         }
-        if (!itr->second
-                || itr->first->IsImmunedToSpell(GetSpellInfo())
-                || !CanBeAppliedOn(itr->first))
+        if (!itr->second || itr->first->IsImmunedToSpell(GetSpellInfo()) || !CanBeAppliedOn(itr->first))
             addUnit = false;
 
         if (addUnit)
@@ -683,21 +681,9 @@ void Aura::UpdateTargetMap(Unit* caster, bool apply)
                 if (itr->first->IsInFlight())
                     addUnit = false;
 
-                switch( GetId() )
-                {
-                    case 62821: // Ulduar, Hodir, Toasty Fire
-                    case 62807: // Ulduar, Hodir, Starlight
-                    case 51103: // Oculus, Mage-Lord Urom, Frostbomb
-                    case 69146:
-                    case 70823:
-                    case 70824:
-                    case 70825: // Icecrown Citadel, Lord Marrowgar, Coldflame
-                        {
-                            if( itr->first->HasAura(GetId()) )
-                                addUnit = false;
-                        }
-                        break;
-                }
+            // Allow only 1 persistent area aura to affect our targets if a custom flag is set.
+            if (itr->first->HasAura(GetId()) && GetSpellInfo()->HasAttribute(SPELL_ATTR0_CU_ONLY_ONE_AREA_AURA))
+                addUnit = false;
             }
             // unit auras can not stack with each other
             else // (GetType() == UNIT_AURA_TYPE)
@@ -2105,10 +2091,6 @@ bool Aura::CanStackWith(Aura const* existingAura, bool remove) const
 
     // check spell group stack rules
     // xinef: this assures us that both spells are in same group!
-    //npcbots: do not check stack rules for npcbots
-    if (!(sameCaster && GetOwner()->IsNPCBotOrPet()))
-    //end npcbot
-    {
     SpellGroupStackFlags stackFlags = sSpellMgr->CheckSpellGroupStackRules(m_spellInfo, existingSpellInfo, remove, IsArea());
     if (stackFlags)
     {
@@ -2150,9 +2132,6 @@ bool Aura::CanStackWith(Aura const* existingAura, bool remove) const
         // xinef: forced return, handle all cases using available flags!
         return !(stackFlags & SPELL_GROUP_STACK_FLAG_NEVER_STACK);
     }
-    //npcbot
-    }
-    //end npcbot
 
     if (m_spellInfo->SpellFamilyName != existingSpellInfo->SpellFamilyName)
         return true;

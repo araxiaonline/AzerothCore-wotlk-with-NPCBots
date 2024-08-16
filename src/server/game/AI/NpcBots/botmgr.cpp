@@ -53,6 +53,7 @@ static std::list<BotMgr::delayed_teleport_callback_type> delayed_bot_teleports;
 //config
 uint8 _basefollowdist;
 uint8 _maxClassNpcBots;
+uint8 _maxAccountNpcBots;
 uint8 _xpReductionAmount;
 uint8 _xpReductionStartingNumber;
 uint8 _mountLevel60;
@@ -119,6 +120,25 @@ bool _enableclass_darkranger;
 bool _enableclass_necromancer;
 bool _enableclass_seawitch;
 bool _enableclass_cryptlord;
+bool _enableclass_wander_warrior;
+bool _enableclass_wander_paladin;
+bool _enableclass_wander_hunter;
+bool _enableclass_wander_rogue;
+bool _enableclass_wander_priest;
+bool _enableclass_wander_deathknight;
+bool _enableclass_wander_shaman;
+bool _enableclass_wander_mage;
+bool _enableclass_wander_warlock;
+bool _enableclass_wander_druid;
+bool _enableclass_wander_blademaster;
+bool _enableclass_wander_sphynx;
+bool _enableclass_wander_archmage;
+bool _enableclass_wander_dreadlord;
+bool _enableclass_wander_spellbreaker;
+bool _enableclass_wander_darkranger;
+bool _enableclass_wander_necromancer;
+bool _enableclass_wander_seawitch;
+bool _enableclass_wander_cryptlord;
 bool _enrageOnDismiss;
 bool _botStatLimits;
 bool _enableWanderingBotsBG;
@@ -293,6 +313,7 @@ void BotMgr::LoadConfig(bool reload)
     _enableNpcBots                  = sConfigMgr->GetBoolDefault("NpcBot.Enable", true);
     _logToDB                        = sConfigMgr->GetBoolDefault("NpcBot.LogToDB", true);
     _maxClassNpcBots                = sConfigMgr->GetIntDefault("NpcBot.MaxBotsPerClass", 1);
+    _maxAccountNpcBots              = sConfigMgr->GetIntDefault("NpcBot.MaxBotsPerAccount", 0);
     _filterRaces                    = sConfigMgr->GetBoolDefault("NpcBot.Botgiver.FilterRaces", false);
     _basefollowdist                 = sConfigMgr->GetIntDefault("NpcBot.BaseFollowDistance", 30);
     _xpReductionAmount              = sConfigMgr->GetIntDefault("NpcBot.XpReduction.Amount", 0);
@@ -378,6 +399,25 @@ void BotMgr::LoadConfig(bool reload)
     _enableclass_necromancer        = sConfigMgr->GetBoolDefault("NpcBot.Classes.Necromancer.Enable", true);
     _enableclass_seawitch           = sConfigMgr->GetBoolDefault("NpcBot.Classes.SeaWitch.Enable", true);
     _enableclass_cryptlord          = sConfigMgr->GetBoolDefault("NpcBot.Classes.CryptLord.Enable", true);
+    _enableclass_wander_warrior     = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Warrior.Enable", true);
+    _enableclass_wander_paladin     = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Paladin.Enable", true);
+    _enableclass_wander_hunter      = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Hunter.Enable", true);
+    _enableclass_wander_rogue       = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Rogue.Enable", true);
+    _enableclass_wander_priest      = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Priest.Enable", true);
+    _enableclass_wander_deathknight = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.DeathKnight.Enable", true);
+    _enableclass_wander_shaman      = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Shaman.Enable", true);
+    _enableclass_wander_mage        = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Mage.Enable", true);
+    _enableclass_wander_warlock     = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Warlock.Enable", true);
+    _enableclass_wander_druid       = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Druid.Enable", true);
+    _enableclass_wander_blademaster = false; // sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Blademaster.Enable", false);
+    _enableclass_wander_sphynx      = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.ObsidianDestroyer.Enable", true);
+    _enableclass_wander_archmage    = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Archmage.Enable", true);
+    _enableclass_wander_dreadlord   = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Dreadlord.Enable", true);
+    _enableclass_wander_spellbreaker= sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.SpellBreaker.Enable", true);
+    _enableclass_wander_darkranger  = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.DarkRanger.Enable", true);
+    _enableclass_wander_necromancer = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.Necromancer.Enable", true);
+    _enableclass_wander_seawitch    = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.SeaWitch.Enable", true);
+    _enableclass_wander_cryptlord   = sConfigMgr->GetBoolDefault("NpcBot.WanderingBots.Classes.CryptLord.Enable", true);
     _enrageOnDismiss                = sConfigMgr->GetBoolDefault("NpcBot.EnrageOnDismiss", true);
     _botStatLimits                  = sConfigMgr->GetBoolDefault("NpcBot.Stats.Limits.Enable", false);
     _botStatLimits_dodge            = sConfigMgr->GetFloatDefault("NpcBot.Stats.Limits.Dodge", 95.0f);
@@ -762,6 +802,53 @@ bool BotMgr::IsClassEnabled(uint8 m_class)
     }
 }
 
+bool BotMgr::IsWanderingClassEnabled(uint8 m_class)
+{
+    switch (m_class)
+    {
+        case BOT_CLASS_WARRIOR:
+            return _enableclass_wander_warrior;
+        case BOT_CLASS_PALADIN:
+            return _enableclass_wander_paladin;
+        case BOT_CLASS_HUNTER:
+            return _enableclass_wander_hunter;
+        case BOT_CLASS_ROGUE:
+            return _enableclass_wander_rogue;
+        case BOT_CLASS_PRIEST:
+            return _enableclass_wander_priest;
+        case BOT_CLASS_DEATH_KNIGHT:
+            return _enableclass_wander_deathknight;
+        case BOT_CLASS_SHAMAN:
+            return _enableclass_wander_shaman;
+        case BOT_CLASS_MAGE:
+            return _enableclass_wander_mage;
+        case BOT_CLASS_WARLOCK:
+            return _enableclass_wander_warlock;
+        case BOT_CLASS_DRUID:
+            return _enableclass_wander_druid;
+        case BOT_CLASS_BM:
+            return _enableclass_wander_blademaster;
+        case BOT_CLASS_SPHYNX:
+            return _enableclass_wander_sphynx;
+        case BOT_CLASS_ARCHMAGE:
+            return _enableclass_wander_archmage;
+        case BOT_CLASS_DREADLORD:
+            return _enableclass_wander_dreadlord;
+        case BOT_CLASS_SPELLBREAKER:
+            return _enableclass_wander_spellbreaker;
+        case BOT_CLASS_DARK_RANGER:
+            return _enableclass_wander_darkranger;
+        case BOT_CLASS_NECROMANCER:
+            return _enableclass_wander_necromancer;
+        case BOT_CLASS_SEA_WITCH:
+            return _enableclass_wander_seawitch;
+        case BOT_CLASS_CRYPT_LORD:
+            return _enableclass_wander_cryptlord;
+        default:
+            return true;
+    }
+}
+
 bool BotMgr::HideBotSpawns()
 {
     return _hideSpawns;
@@ -817,6 +904,10 @@ bool BotMgr::IsBotHKAchievementsEnabled()
 uint8 BotMgr::GetMaxClassBots()
 {
     return _maxClassNpcBots;
+}
+uint8 BotMgr::GetMaxAccountBots()
+{
+    return _maxAccountNpcBots;
 }
 uint8 BotMgr::GetHealTargetIconFlags()
 {
@@ -1391,7 +1482,6 @@ void BotMgr::_teleportBot(Creature* bot, Map* newMap, float x, float y, float z,
         if (mymap)
         {
             bot->BotStopMovement();
-            botai->UnsummonAll();
 
             if (mymap != newMap)
             {
@@ -1406,6 +1496,8 @@ void BotMgr::_teleportBot(Creature* bot, Map* newMap, float x, float y, float z,
 
             if (bot->IsInWorld())
             {
+                botai->UnsummonAll(!botai->IAmFree() || botai->IsWanderer());
+
                 if (Battleground* bg = bot->GetBotBG())
                     bg->EventBotDroppedFlag(bot);
 
@@ -1431,7 +1523,7 @@ void BotMgr::_teleportBot(Creature* bot, Map* newMap, float x, float y, float z,
                 mymap->RemoveFromMap(bot, false);
         }
 
-        if (bot->IsFreeBot())
+        if (botai->IAmFree())
         {
             bot->Relocate(x, y, z, ori);
             if (bot->FindMap())
@@ -1550,7 +1642,7 @@ void BotMgr::CleanupsBeforeBotDelete(Creature* bot)
         bot->ExitVehicle();
 
     //remove any summons
-    bot->GetBotAI()->UnsummonAll();
+    bot->GetBotAI()->UnsummonAll(false);
     bot->AttackStop();
     bot->CombatStopWithPets(true);
     bot->getHostileRefMgr().deleteReferences();
@@ -1558,9 +1650,11 @@ void BotMgr::CleanupsBeforeBotDelete(Creature* bot)
     //bot->SetOwnerGUID(ObjectGuid::Empty);
     //_owner->m_Controlled.erase(bot);
     bot->SetControlledByPlayer(false);
+    //bot->RemoveUnitFlag(UNIT_FLAG_PLAYER_CONTROLLED);
     //bot->RemoveUnitFlag(UNIT_FLAG_PVP_ATTACKABLE);
     bot->SetByteValue(UNIT_FIELD_BYTES_2, 1, 0);
     bot->SetCreator(nullptr);
+    //bot->SetCreatorGUID(ObjectGuid::Empty);
 
     Map* map = bot->FindMap();
     if (!map || map->IsDungeon())
@@ -1687,7 +1781,7 @@ BotAddResult BotMgr::AddBot(Creature* bot)
     //    if (count >= map->GetMaxPlayers())
     //    {
     //        ChatHandler ch(_owner->GetSession());
-    //        ch.PSendSysMessage("Instance players limit exceed (%u of %u)", count, map->GetMaxPlayers());
+    //        ch.PSendSysMessage("Instance players limit exceed ({} of {})", count, map->GetMaxPlayers());
     //        return BOT_ADD_INSTANCE_LIMIT;
     //    }
     //}
@@ -1712,7 +1806,7 @@ BotAddResult BotMgr::AddBot(Creature* bot)
     if (!bot->IsAlive())
         _reviveBot(bot);
 
-    bot->GetBotAI()->UnsummonAll();
+    bot->GetBotAI()->UnsummonAll(false);
 
     _bots[bot->GetGUID()] = bot;
 
@@ -1720,8 +1814,10 @@ BotAddResult BotMgr::AddBot(Creature* bot)
     //ASSERT(!bot->GetOwnerGUID());
     //bot->SetOwnerGUID(_owner->GetGUID());
     bot->SetCreator(_owner); //needed in case of FFAPVP
+    //bot->SetCreatorGUID(_owner->GetGUID());
     //_owner->m_Controlled.insert(bot);
     bot->SetControlledByPlayer(true);
+    //bot->SetUnitFlag(UNIT_FLAG_PLAYER_CONTROLLED);
     bot->SetByteValue(UNIT_FIELD_BYTES_2, 1, _owner->GetByteValue(UNIT_FIELD_BYTES_2, 1));
     bot->SetFaction(_owner->GetFaction());
     bot->SetPhaseMask(_owner->GetPhaseMask(), true);
@@ -2141,7 +2237,7 @@ void BotMgr::UpdatePhaseForBots()
     {
         itr->second->SetPhaseMask(_owner->GetPhaseMask(), itr->second->IsInWorld());
         if (itr->second->GetBotsPet())
-            itr->second->GetBotsPet()->SetPhaseMask(_owner->GetPhaseMask(), true); //only if in world
+            itr->second->GetBotsPet()->SetPhaseMask(_owner->GetPhaseMask(), itr->second->GetBotsPet()->IsInWorld());
     }
 }
 
