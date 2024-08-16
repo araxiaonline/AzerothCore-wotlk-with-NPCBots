@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.h": "cpp",
         "*.dist": "properties",
         "*.crash": "properties",
         "*.wtf": "properties",
@@ -114,7 +115,24 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "*.ipp": "cpp",
-        "resumable": "cpp"
+        "resumable": "cpp",
+        "__bit_reference": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "__bits": "cpp",
+        "__config": "cpp",
+        "__debug": "cpp",
+        "__errc": "cpp",
+        "__locale": "cpp",
+        "__mutex_base": "cpp",
+        "__node_handle": "cpp",
+        "__std_stream": "cpp",
+        "__threading_support": "cpp",
+        "__tuple": "cpp",
+        "__verbose_abort": "cpp",
+        "__nullptr": "cpp",
+        "__string": "cpp"
     },
     "deno.enable": true,
     "deno.path": "deps/deno/bin/deno",
