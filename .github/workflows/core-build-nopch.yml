@@ -24,17 +24,9 @@ jobs:
             compiler:
               CC: clang-15
               CXX: clang++-15
-          - os: ubuntu-24.04
-            compiler:
-              CC: clang-18
-              CXX: clang++-18
-          - os: ubuntu-24.04
-            compiler:
-              CC: gcc-14
-              CXX: g++-14
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }}-${{ matrix.compiler.CC }}-nopch
-    if: github.repository == 'trickerer/AzerothCore-wotlk-with-NPCBots'
+    if: github.repository == 'araxiaonline/AzerothCore-wotlk-with-NPCBots'
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/linux-build
