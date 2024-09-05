@@ -42,7 +42,8 @@ WORKDIR /azerothcore
 FROM skeleton AS build
 
 ARG CTOOLS_BUILD="all"
-ARG CTYPE="RelWithDebInfo"
+# ARG CTYPE="RelWithDebInfo"
+ARG CTYPE="Release"
 ARG CCACHE_CPP2="true"
 ARG CSCRIPTPCH="OFF"
 ARG CSCRIPTS="static"
@@ -53,7 +54,7 @@ ARG CMAKE_EXTRA_OPTIONS=""
 ARG GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 
 ARG CCACHE_DIR="/ccache"
-ARG CCACHE_MAXSIZE="1000MB"
+ARG CCACHE_MAXSIZE="1500MB"
 ARG CCACHE_SLOPPINESS="pch_defines,time_macros,include_file_mtime"
 ARG CCACHE_COMPRESS=""
 ARG CCACHE_COMPRESSLEVEL="9"
@@ -99,6 +100,9 @@ RUN --mount=type=cache,target=/ccache,sharing=locked \
        -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"          \
        -DCMAKE_C_COMPILER_LAUNCHER="ccache"            \
        -DBoost_USE_STATIC_LIBS="ON"                    \
+       -DCMAKE_LINKER=lld                              \
+       -DCMAKE_CXX_LINKER=lld                          \
+       -DCMAKE_C_LINKER=lld                            \
     && cmake --build . --config "$CTYPE" -j $(($(nproc) + 1)) \
     && cmake --install . --config "$CTYPE"
 
