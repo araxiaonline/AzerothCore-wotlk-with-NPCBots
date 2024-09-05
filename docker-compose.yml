@@ -66,9 +66,11 @@ services:
         DOCKER_USER: ${DOCKER_USER:-acore}
     networks:
       - ac-network
+
     stdin_open: true
     tty: true
     restart: unless-stopped
+    privileged: true
     env_file:
         ${DOCKER_AC_ENV_FILE:-conf/dist/env.ac}
     environment:
