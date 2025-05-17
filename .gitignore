@@ -110,3 +110,7 @@ env.docker
 
 #araxiaonline
 .aider.*
+
+mod-*
+mysql/*
+newrelic-*
