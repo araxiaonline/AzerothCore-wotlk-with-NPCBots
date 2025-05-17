@@ -21,10 +21,10 @@ services:
         target: /var/lib/mysql
     restart: unless-stopped
     healthcheck:
-      test: "/usr/bin/mysql --user=root --password=$$MYSQL_ROOT_PASSWORD --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --host=127.0.0.1 --user=root --password=peMVe5zM2KeZPMjy --execute \"SELECT 1;\""
       interval: 5s
       timeout: 10s
-      retries: 40
+      retries: 3
 
   ac-db-import:
     container_name: ac-db-import
@@ -92,8 +92,8 @@ services:
     depends_on:
       ac-database:
         condition: service_healthy
-      ac-db-import:
-        condition: service_completed_successfully
+#      ac-db-import:
+#        condition: service_completed_successfully
       ac-client-data-init:
         condition: service_completed_successfully
 
